@@ -1,8 +1,11 @@
 {
   "name": "logseq-featha",
   "version": "0.0.1",
-  "private": true,
+  "main": "public/index.html",
   "devDependencies": {
     "shadow-cljs": "2.27.1"
+  },
+  "logseq": {
+    "id": "_2w6p59whp"
   }
 }
