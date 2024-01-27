@@ -5,9 +5,11 @@
   "src/test"]
 
  :dependencies
- []
-
- :dev-http {8080 "public"}
+ [
+  [djblue/portal "0.51.0"]
+ ]
+ :nrepl {:port 8702
+         :middleware [portal.nrepl/wrap-portal]}
  
  :builds
  {:app
