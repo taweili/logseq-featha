@@ -7,5 +7,9 @@
  :dependencies
  []
 
+ :dev-http {8080 "public"}
+ 
  :builds
- {}}
+ {:app
+  {:target :browser
+   :modules {:main {:init-fn featha.app/init}}}}}
