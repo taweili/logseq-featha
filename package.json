@@ -2,6 +2,10 @@
   "name": "logseq-featha",
   "version": "0.0.1",
   "main": "public/index.html",
+  "dependencies": {
+    "@logseq/libs": "0.0.15",
+    "promesa": "0.1.1"
+  },
   "devDependencies": {
     "shadow-cljs": "2.27.1"
   },
