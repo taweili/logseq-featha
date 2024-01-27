@@ -2,6 +2,7 @@
   "name": "logseq-featha",
   "version": "0.0.1",
   "main": "public/index.html",
+  "license": "LGPL-3.0-or-later",
   "dependencies": {
     "@logseq/libs": "0.0.15",
     "promesa": "0.1.1"
