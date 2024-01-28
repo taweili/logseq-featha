@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "main": "public/index.html",
   "license": "LGPL-3.0-or-later",
+  "description": "A mimimum skeleton codes for using ClojureScript to develop Logseq plugin",
   "dependencies": {
-    "@logseq/libs": "0.0.15",
-    "promesa": "0.1.1"
+    "@logseq/libs": "0.0.15"
   },
   "devDependencies": {
     "shadow-cljs": "2.27.1"
   },
   "logseq": {
     "id": "_2w6p59whp",
-    "title": "ClojureScript Plugin Skeleton"
+    "title": "ClojureScript Plugin",
+    "icon": "clojurescript.png"
   }
 }
