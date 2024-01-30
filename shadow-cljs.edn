@@ -5,7 +5,8 @@
   "src/test"]
 
  :dependencies
- [[cider/cider-nrepl "0.45.0"]
+ [[funcool/promesa "11.0.678"]
+  [cider/cider-nrepl "0.45.0"]
   [refactor-nrepl/refactor-nrepl "3.9.0"]] 
 
  :nrepl {:port 8702

@@ -1,6 +1,7 @@
 (ns featha.app
   (:require
    ["@logseq/libs"]
+   [promesa.core :as p]
    [cljs.core.async :refer [go]]
    [cljs.core.async.interop :refer-macros [<p!]]))
 
@@ -8,13 +9,31 @@
   (js/console.log "Hello from slash-command"))
 
 ;
+; use promesa.core
+;
+(defn block-context-menu-block-promesa [^js/IHookEvent e]
+  (js/console.log "Hello from block-context-menu-block-promesa")
+  (p/-> (js/logseq.Editor.getBlock (.-uuid e))
+        (js/console.log)))
+
+(defn block-context-menu-block-promesa-let [^js/IHookEvent e] 
+  (js/console.log "Hello from block-context-menu-block-promesa-let")
+  (p/let [block (js/logseq.Editor.getBlock (.-uuid e))
+          page (js/logseq.Editor.getPage (.-id (.-page block)))]
+    (js/console.log block)
+    (js/console.log page)))
+
+;
 ; use core.async
 ;
 (defn block-context-menu-block-async [^js/IHookEvent e]
+  (js/console.log "block-context-menu-block-async")
   (go 
-    (let [block (<p! (js/logseq.Editor.getBlock (.-uuid e)))]
+    (let [block (<p! (js/logseq.Editor.getBlock (.-uuid e)))
+          page (<p! (js/logseq.Editor.getPage (.-id (.-page block))))]
       (try
         (js/console.log block)
+        (js/console.log page)
         (catch js/Error e (js/console.error e))))))
 ;
 ; Interact with Promise without external library
@@ -50,7 +69,11 @@
   ; register block context menu to process block
   (js/logseq.Editor.registerBlockContextMenuItem "featha (page)" (fn [e] (block-context-menu-get-page e)))
   ; process block with core.async
-  (js/logseq.Editor.registerBlockContextMenuItem "featha (block with async)" (fn [e] (block-context-menu-block-async e))))
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (block with async)" (fn [e] (block-context-menu-block-async e)))
+  ; proecess block with promesa 
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (block with promesa)" (fn [e] (block-context-menu-block-promesa e)))
+  ; proecess block with promesa 
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (block with promesa let)" (fn [e] (block-context-menu-block-promesa-let e))))
 
 
 (defn init []
