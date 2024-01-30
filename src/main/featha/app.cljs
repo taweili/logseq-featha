@@ -14,18 +14,19 @@
 ; in this case, keep the compiler happy to remove the warning 
 ; "Cannot infer target type in expression (. e -uuid)"
 (defn block-context-menu-item-action [^js/IHookEvent e]
-  (js/console.log "Hello from block-context-menu-item-action %s" (.-uuid e)))
-
-(defn get-page [^js/BlockEntity block]
-  (let [page_id (.-page block)]
-    (js/console.log block)
-    (-> (js/logseq.Editor.getPage (.-id page_id))
-        (.then js/console.log))))
+  (js/console.log "block-context-menu-item-action --- ")
+  (js/console.log e))
 
 ; use core.async to make sure async codes are executed.
-(defn block-context-menu-get-all-blocks-on-the-page [^js/IHookEvent e]
-    (-> (js/logseq.Editor.getBlock (.-uuid e))
-        (.then get-page)))
+(defn block-context-menu-get-page [^js/IHookEvent e]
+  (js/console.log "block-context-menu-get-all-blocks-on-the-page --- ")
+  (js/console.log e)
+  (-> (js/logseq.Editor.getBlock (.-uuid e))
+      (.then (fn [block]
+               (js/console.log block)
+               (-> (js/logseq.Editor.getPage (.-id (.-page block)))
+                   (.then js/console.log))))))
+
 
 (defn main []
   ; print to console
@@ -37,7 +38,7 @@
   ; register block context menu item use fn.
   (js/logseq.Editor.registerBlockContextMenuItem "featha" (fn [e] (block-context-menu-item-action e)))
   ; register block context menu to process block
-  (js/logseq.Editor.registerBlockContextMenuItem "featha (block)" (fn [e] (block-context-menu-get-all-blocks-on-the-page e))))
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (page)" (fn [e] (block-context-menu-get-page e))))
 
 (defn init []
   (-> (js/logseq.ready) ; return a promise
