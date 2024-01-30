@@ -1,11 +1,21 @@
 (ns featha.app
   (:require
-   ["@logseq/libs"]))
+   ["@logseq/libs"]
+   [cljs.core.async :refer [go]]
+   [cljs.core.async.interop :refer-macros [<p!]]))
 
 (defn slash-command []
   (js/console.log "Hello from slash-command"))
 
-
+;
+; use core.async
+;
+(defn block-context-menu-block-async [^js/IHookEvent e]
+  (go 
+    (let [block (<p! (js/logseq.Editor.getBlock (.-uuid e)))]
+      (try
+        (js/console.log block)
+        (catch js/Error e (js/console.error e))))))
 ;
 ; Interact with Promise without external library
 ;
@@ -36,9 +46,12 @@
   ; register slash command
   (js/logseq.Editor.registerSlashCommand "featha" slash-command)
   ; register block context menu item use fn.
-  (js/logseq.Editor.registerBlockContextMenuItem "featha" (fn [e] (block-context-menu-item-action e)))
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (block)" (fn [e] (block-context-menu-item-action e)))
   ; register block context menu to process block
-  (js/logseq.Editor.registerBlockContextMenuItem "featha (page)" (fn [e] (block-context-menu-get-page e))))
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (page)" (fn [e] (block-context-menu-get-page e)))
+  ; process block with core.async
+  (js/logseq.Editor.registerBlockContextMenuItem "featha (block with async)" (fn [e] (block-context-menu-block-async e))))
+
 
 (defn init []
   (-> (js/logseq.ready) ; return a promise
